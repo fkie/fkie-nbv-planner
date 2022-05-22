@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>fkie_nbv_planner</name>
+    <version>0.0.0</version>
+    <description>The fkie_nbv_planner package</description>
+
+    <maintainer email="menaka.naazare@fkie.fraunhofer.de">Menaka Naazare</maintainer>
+    <maintainer email="francisco.garcia.rosas@fkie.fraunhofer.de">Francisco Garcia</maintainer>
+
+    <license>>BSD-3-Clause</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+    <depend>actionlib</depend>
+    <depend>actionlib_msgs</depend>
+    <depend>cgal</depend>
+    <depend>eigen</depend>
+    <depend>fkie_ddynamic_reconfigure</depend>
+    <depend>fkie_measurement_msgs</depend>>
+    <depend>geometry_msgs</depend>
+    <depend>gps_common</depend>
+    <depend>jsk_rviz_plugins</depend>
+    <depend>mbf_msgs</depend>
+    <depend>message_generation</depend>
+    <depend>message_runtime</depend>
+    <depend>nav_msgs</depend>
+    <depend>octomap</depend>
+    <depend>octomap_msgs</depend>
+    <depend>octomap_server</depend>
+    <depend>octomap_rviz_plugins</depend>
+    <depend>roscpp</depend>
+    <depend>std_msgs</depend>
+    <depend>tf</depend>
+    <depend>tf2</depend>
+    <depend>tf2_geometry_msgs</depend>
+    <depend>visualization_msgs</depend>
+
+
+</package>

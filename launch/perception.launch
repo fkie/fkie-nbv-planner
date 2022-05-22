@@ -1,0 +1,23 @@
+<launch>
+
+  <arg name="robot_ns" default="robot"/>
+
+  <!-- Convert the depth image into point cloud -->
+  <node pkg="nodelet" type="nodelet" args="manager" name="camera_manager" output="screen" clear_params="true">
+    <param name="capability_group" value="vision"/>
+  </node>
+
+  <node pkg="nodelet" type="nodelet" name="image_to_points" args="load depth_image_proc/point_cloud_xyz camera_manager --no-bond" clear_params="true">
+    <remap from="camera_info" to="/realsense/depth/camera_info" />
+    <remap from="image_rect" to="/realsense/depth/image_rect_raw" />
+    <remap from="points" to="/realsense/depth/points2" />
+    <param name="queue_size" value="5" />
+    <param name="capability_group" value="vision"/>
+  </node>
+
+  <!--  Use the point cloud into octomap server  -->
+  <include file="$(find fkie_nbv_planner)/launch/octomap_server.launch">
+    <arg name="robot_ns" value="$(arg robot_ns)"/>
+  </include>
+
+</launch>

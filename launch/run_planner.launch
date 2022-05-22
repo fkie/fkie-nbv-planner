@@ -1,0 +1,40 @@
+<launch>
+  <env name="ROSCONSOLE_FORMAT" value="${logger}: ${message}"/>
+
+  <arg name="robot_ns" default="husky"/>
+  <arg name="world_frame" default="world"/>
+  <arg name="nbv_yaml_file" default="nbv_planner_freespace_fast"/>
+
+  <!--  Provide camera poses in world frame as Posestamped messages for the planner -->
+  <node name="camera_pose_pub" pkg="fkie_nbv_planner" type="camera_pose_tf.py" clear_params="true">
+    <remap from="camera_pose" to="$(arg robot_ns)/camera_pose"/>
+    <param name="world_frame" value="world"/>
+    <param name="sensor_frame" value="realsense_color_frame"/>
+    <param name="capability_group" value="base"/>
+    <param name="rate" value="5.0"/>
+  </node>
+
+  <node name="robot_pose" pkg="fkie_nbv_planner" type="odom2Posestamped.py" clear_params="true">
+    <param name="capability_group" value="base"/>
+    <remap from="odom" to="$(arg robot_ns)/$(arg robot_ns)_velocity_controller/odom"/>
+    <remap from="pose" to="$(arg robot_ns)/pose"/>
+  </node>
+
+  <!--  Perception  -->
+  <include file="$(find fkie_nbv_planner)/launch/perception.launch">
+    <arg name="robot_ns" value="$(arg robot_ns)"/>
+  </include>
+
+  <!-- Main planner -->
+  <node name="fkie_nbv_planner" pkg="fkie_nbv_planner" type="nbvplanner_node" launch-prefix="gdb -ex run -ex bt -batch --args" ns="$(arg robot_ns)" clear_params="true">
+    <param name="capability_group" value="planner"/>
+    <param name="nm/kill_on_stop" value="300"/>
+    <param name="world_frame" value="$(arg world_frame)" />
+    <rosparam command="load" file="$(find fkie_nbv_planner)/config/$(arg nbv_yaml_file).yaml" />
+    <remap from="camera_pose" to="camera_pose"/>
+    <remap from="octomap" to="octomap_full"/>
+    <remap from="/$(arg robot_ns)/robot_bbx" to="/$(arg robot_ns)/$(arg robot_ns)_mbf/global_costmap/footprint"/>
+  </node>
+
+
+</launch>

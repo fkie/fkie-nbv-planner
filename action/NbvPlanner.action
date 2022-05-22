@@ -1,0 +1,15 @@
+# Define the goal
+Header header
+fkie_measurement_msgs/BoundaryPolygon current_boundary
+fkie_measurement_msgs/MeasurementEstimation estimations
+bool arm_in_prepacked
+---
+# Define the result
+geometry_msgs/PoseStamped[] goals
+#geometry_msgs/PoseStamped goal
+bool request_base_pose
+geometry_msgs/PoseStamped goal_pose_3d
+bool complete_exploration
+int16 explored_boundary_id
+---
+# Define a feedback message

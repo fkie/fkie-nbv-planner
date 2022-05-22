@@ -1,0 +1,69 @@
+# Group frontier
+num_frontiers: 10
+frontiers_N_max_tries: 50
+max_num_cached_points_to_keep: 50
+min_gain_frontier: -10000.0
+free_space_frontier: true 
+
+
+# Group General
+planner_boundary_id: 0
+arm_height_min: 0.4
+arm_height_max: 1.4
+self_collision_height: 2.0
+arm_goal_range: 1.3
+raycast_dr: 0.1 # This should be the same as the resolution of the octomap
+raycast_dphi: 10
+raycast_dtheta: 10
+gain_r_min: 0.3
+gain_r_max: 1.5 # This should be same as the max range of the octomap
+camera_hfov: 86.0
+camera_vfov: 57.0
+visited_cells_grid_size: 1.0
+compute_yaw_from_free_space: true
+compute_yaw_from_measurement: false
+min_distance_to_obstacle: 0.3
+
+
+# Group pathOptimizer
+path_optimizer_sampling_target_count: 1
+shift_points_max_length: 2.0
+shift_points_threshold: 0.9
+optimize_path_using_convex_hull: true
+optimize_path_using_sampling: false
+optimize_path_remove_points_inside_bbx: true
+optimize_path_shift_points_towards_obstacles: false
+
+# Group RRT
+rrt_tree_length: 400 # Number of nodes in the tree
+rrt_N_max_tries: 50 # Maximum number of tries allowed for a q_new (child)
+rrt_sampling_radius: 30.0 
+rrt_collision_cyl_radius: 0.3 # size of cylinder from q_near (parent) to q_new (child)
+
+rrt_sample_threshold_distance: 0.4 # Distance between one sample to any one other sample, should ALWAYS be less than rrt_step_size.
+rrt_step_size: 0.5 # Distance between parent and child nodes of the tree
+
+sample_in_unknown: false # RRT can be grown in known or unknown space
+do_rrt_star: false # RRT star takes too long
+
+# Group Utility
+utility_lambda: 5.0
+utility_min_gain: 0.0
+
+# Weights
+utility_weight_measurement: 0.0
+utility_weight_free_space: 5.0
+utility_weight_visited_cell: 500.0
+utility_weight_euclidean_cost: 0.0
+
+# normalization parameters
+utility_max_value_free_space: 1.70
+utility_max_value_measurement: 500
+utility_max_value_visited_cell: 1.0 #Do not configure
+
+# No group
+# Boundary: 3m bounding box around the point (-5.3603,-5.6852)
+planner_boundary_x: [-8.3603, -2.3603, -2.3603, -8.3603]
+planner_boundary_y: [-2.6852, -2.6852, -8.6852, -8.6852]
+robot_sampling_frame: turret_link
+world_frame: world
