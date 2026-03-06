@@ -41,7 +41,7 @@ The article can be found on `IEEE Xplore <https://ieeexplore.ieee.org/abstract/d
 Requirements
 ------------
 
-This package has been tested on Ubuntu 20.04 and ROS Noetic 
+This package has been tested on Ubuntu 20.04 and ROS Noetic.
 
 Installation
 ------------
@@ -69,21 +69,38 @@ Installation
 Try it out!
 -----------
 
-We highly recommend using `fkie_node_manager <https://github.com/fkie/multimaster_fkie>`_ for managing the ROS nodes. 
 ``run_planner.launch`` starts the next-best-view planner:
 
 .. code-block:: shell
 
       roslaunch fkie_nbv_planner run_planner.launch
 
+The planner is implemented as an action server which accepts action client requests
+(not in the repository, refer to `SimpleActionClient Tutorial <https://wiki.ros.org/actionlib_tutorials/Tutorials/SimpleActionClient>`_)
+with an exploration boundary and measured readings of the ROI (See `NbvPlanner.action <https://github.com/fkie/fkie-nbv-planner/blob/main/action/NbvPlanner.action>`_).
 
-Project status
---------------
+An example exploration boundary and measured readings can be obtained from the
+`fkie_measurement_server <https://github.com/fkie/fkie_environmental_measurements/tree/main/fkie_measurement_server>`_
+package using an action client (See `RequestBoundaryPolygons.action
+<https://github.com/fkie/fkie_environmental_measurements/blob/main/fkie_measurement_msgs/action/RequestBoundaryPolygons.action>`_).
 
-We are currently working on the Noetic version of the complete system that can
-demonstrate the execution of the planner with a `husky base and a panda arm
-<https://github.com/fkie/fkie_husky_manipulation_simulation>`_ using behavior
-trees. The complete system is planned to be available by the end of June 2022. 
+The following topics are required as inputs for the planner:
+
+- ``octomap_full`` (`octomap_msgs/Octomap <https://docs.ros.org/en/api/octomap_msgs/html/msg/Octomap.html>`_):
+  The octomap server subscribes ``/clock``, ``/tf``, ``/tf_static`` and ``/realsense/depth/points2`` (`sensor_msgs/PointCloud2 <https://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/PointCloud2.html>`_)
+  to publish ``octomap_full``.
+
+  The pointclouds on ``/realsense/depth/points2`` are generated from
+  `depth_image_proc <https://wiki.ros.org/depth_image_proc>`_ (Line 10 in `perception.launch <https://github.com/fkie/fkie-nbv-planner/blob/b009c69f2466e23ae92ae2f6bbb2663433942b7f/launch/perception.launch#L10>`_)
+  using a simulated RealSense camera (available `here <https://github.com/pal-robotics/realsense_gazebo_plugin>`_)
+  using the depth image and camera info topic.
+
+- ``camera_pose`` (`geometry_msgs/PoseStamped <https://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/PoseStamped.html>`_):
+  Pose of the camera in world frame as Posestamped messages.
+
+- ``${arg robot_ns}_mbf/global_costmap/footprint`` (`geometry_msgs/PolygonStamped <https://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/PolygonStamped.html>`_):
+  Robot footprint to avoid generating invalid samples.
+  We used `move_base_flex <https://wiki.ros.org/move_base_flex>`_ for platform navigation.
 
 
 Acknowledgements
@@ -91,13 +108,13 @@ Acknowledgements
 
 Our work builds upon ideas already presented in the literature:
 
-- AEPlanner [`IEEE <https://ieeexplore.ieee.org/document/8633925>`_  | `GitHub <https://github.com/mseln/aeplanner>`_]
-- RH-NBVP [`IEEE <https://ieeexplore.ieee.org/document/7487281>`_ | `GitHub <https://github.com/ethz-asl/nbvplanner>`_]
-- mav_active_3D_planning [`IEEE <https://ieeexplore.ieee.org/document/8968434>`_ | `GitHub <https://github.com/ethz-asl/mav_active_3d_planning>`_]
+- AEPlanner [`IEEE <https://ieeexplore.ieee.org/document/8633925>`__  | `GitHub <https://github.com/mseln/aeplanner>`__]
+- RH-NBVP [`IEEE <https://ieeexplore.ieee.org/document/7487281>`__ | `GitHub <https://github.com/ethz-asl/nbvplanner>`__]
+- mav_active_3D_planning [`IEEE <https://ieeexplore.ieee.org/document/8968434>`__ | `GitHub <https://github.com/ethz-asl/mav_active_3d_planning>`__]
 
 Authors
 -------
 
-- Menaka Naazare (`E-Mail <mailto:menaka.naazare@fkie.fraunhofer.de>`_)
-- Francisco Garcia Rosas (`Email <mailto:francisco.garcia.rosas@fkie.fraunhofer.de>`_)
+- Menaka Wildt (`E-Mail <mailto:menaka.wildt@fkie.fraunhofer.de>`_)
+- Francisco Garcia Rosas
 
