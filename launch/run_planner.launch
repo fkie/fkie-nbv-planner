@@ -1,7 +1,7 @@
 <launch>
   <env name="ROSCONSOLE_FORMAT" value="${logger}: ${message}"/>
 
-  <arg name="robot_ns" default="husky"/>
+  <arg name="robot_ns" default="robot"/>
   <arg name="world_frame" default="world"/>
   <arg name="nbv_yaml_file" default="nbv_planner_freespace_fast"/>
 
@@ -26,7 +26,7 @@
   </include>
 
   <!-- Main planner -->
-  <node name="fkie_nbv_planner" pkg="fkie_nbv_planner" type="nbvplanner_node" launch-prefix="gdb -ex run -ex bt -batch --args" ns="$(arg robot_ns)" clear_params="true">
+  <node name="fkie_nbv_planner" pkg="fkie_nbv_planner" type="nbvplanner_node" launch-prefix="gdb -ex run -ex bt -batch --args" ns="$(arg robot_ns)" clear_params="true" output="screen">
     <param name="capability_group" value="planner"/>
     <param name="nm/kill_on_stop" value="300"/>
     <param name="world_frame" value="$(arg world_frame)" />
