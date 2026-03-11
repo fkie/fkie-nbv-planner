@@ -54,7 +54,9 @@ Installation
                        ros-noetic-octomap-msgs ros-noetic-octomap-server \
                        ros-noetic-octomap-rviz-plugins ros-noetic-tf ros-noetic-tf2 \
                        ros-noetic-tf2-geometry-msgs ros-noetic-visualization-msgs \
-                       ros-noetic-jsk-rviz-plugins
+                       ros-noetic-jsk-rviz-plugins \
+                       ros-noetic-grid-map-core \
+                       ros-noetic-grid-map-ros
 
 - Clone and build the custom packages
 
